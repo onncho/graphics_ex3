@@ -38,7 +38,7 @@ public class Scene implements IInitable {
 			maxRecursionLevel = Integer.parseInt("max-recursion-level");
 		}
 		if (attributes.containsKey("ambient-light")){
-			ambientLight = new Vec(attributes.get("ambientLight"));
+			ambientLight = new Vec(attributes.get("ambient-light"));
 		}
 	}
 

@@ -1,5 +1,6 @@
 package ex3.render.raytrace;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -9,6 +10,7 @@ import ex3.render.IRenderer;
 
 public class RayTracer implements IRenderer {
 
+	Scene scene;
 	/**
 	 * Inits the renderer with scene description and sets the target canvas to
 	 * size (width X height). After init renderLine may be called
@@ -25,15 +27,14 @@ public class RayTracer implements IRenderer {
 	 */
 	@Override
 	public void init(SceneDescriptor sceneDesc, int width, int height, File path) {
-		Scene scene = new Scene();
+		scene = new Scene();
 		scene.init(sceneDesc.getSceneAttributes());
-		
+
 		for (Element e : sceneDesc.getObjects()) {
 			scene.addObjectByName(e.getName(), e.getAttributes());
 		}
-		
-		scene.setCameraAttributes(sceneDesc.getCameraAttributes());
 
+		scene.setCameraAttributes(sceneDesc.getCameraAttributes());
 	}
 
 	/**
@@ -47,7 +48,16 @@ public class RayTracer implements IRenderer {
 	 */
 	@Override
 	public void renderLine(BufferedImage canvas, int line) {
-		// TODO Implement this
+		//get background color of the image
+		
+		int x = (int) Math.round(scene.backgroundCol.x * 255);
+		int y = (int) Math.round(scene.backgroundCol.y * 255);
+		int z = (int) Math.round(scene.backgroundCol.z * 255);
+		Color bgColor  = new Color(x,y,z);
+		System.out.println("Color is: " +x +" " +y +" " +z);
+		
+		for (int i = 0; i < canvas.getWidth(); i++) {
+			canvas.setRGB(i, line, bgColor.getRGB());
+		}
 	}
-
 }
