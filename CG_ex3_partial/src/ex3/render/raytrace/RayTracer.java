@@ -9,8 +9,12 @@ import ex3.parser.SceneDescriptor;
 import ex3.render.IRenderer;
 
 public class RayTracer implements IRenderer {
-
 	Scene scene;
+	
+	//get background color of the image
+	int x, y, z;
+	Color bgColor;
+	
 	/**
 	 * Inits the renderer with scene description and sets the target canvas to
 	 * size (width X height). After init renderLine may be called
@@ -35,6 +39,11 @@ public class RayTracer implements IRenderer {
 		}
 
 		scene.setCameraAttributes(sceneDesc.getCameraAttributes());
+		
+		int x = (int) Math.round(scene.backgroundCol.x * 255);
+		int y = (int) Math.round(scene.backgroundCol.y * 255);
+		int z = (int) Math.round(scene.backgroundCol.z * 255);
+		bgColor = new Color(x,y,z);
 	}
 
 	/**
@@ -48,16 +57,9 @@ public class RayTracer implements IRenderer {
 	 */
 	@Override
 	public void renderLine(BufferedImage canvas, int line) {
-		//get background color of the image
-		
-		int x = (int) Math.round(scene.backgroundCol.x * 255);
-		int y = (int) Math.round(scene.backgroundCol.y * 255);
-		int z = (int) Math.round(scene.backgroundCol.z * 255);
-		Color bgColor  = new Color(x,y,z);
-		System.out.println("Color is: " +x +" " +y +" " +z);
-		
 		for (int i = 0; i < canvas.getWidth(); i++) {
 			canvas.setRGB(i, line, bgColor.getRGB());
 		}
+		
 	}
 }

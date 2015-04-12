@@ -3,7 +3,6 @@ package ex3.render.raytrace;
 import java.util.Map;
 import java.util.Scanner;
 
-import javafx.scene.transform.Scale;
 import math.Point3D;
 import math.Ray;
 import math.Vec;
