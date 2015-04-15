@@ -35,6 +35,9 @@ public class Sphere extends Surface {
 		double c = Math.pow(Point3D.sub(center, ray.p).length(), 2) - Math.pow(radius ,2);
 		double t = Equations.solveQuadratic(a,b,c);
 		Point3D p = new Point3D(ray.p);
+		if(t == Double.MAX_VALUE){
+			return null;
+		}
 		p.addVector(Vec.scale(t, ray.v));
 		return new Intersection(p, t, this);
 	}

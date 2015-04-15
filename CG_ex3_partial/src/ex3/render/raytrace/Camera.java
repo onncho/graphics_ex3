@@ -7,7 +7,6 @@ import math.Point3D;
 import math.Ray;
 import math.Vec;
 
-	
 
 /**
  * Represents the scene's camera.
@@ -15,7 +14,7 @@ import math.Vec;
  */
 public class Camera implements IInitable{
 
-	public Point3D eye;
+	public Point3D eye, Pc;
 	public Vec direction, upDirection, rightDirection;
 	public double screenWidth, screenDist;
 	
@@ -29,23 +28,31 @@ public class Camera implements IInitable{
 			direction.normalize();
 		}
 		if (attributes.containsKey("up-direction")) { 
-			upDirection = new Vec(attributes.get("up-direction"));  
+			upDirection = new Vec(attributes.get("up-direction")); 
+			upDirection.normalize();
 			rightDirection = Vec.crossProd(direction, upDirection);
 			rightDirection.normalize();
 			upDirection = Vec.crossProd(rightDirection, direction);
-			upDirection.normalize();
+			System.out.println("Direction " +direction);
+			System.out.println("Up Direction " +upDirection);
+			System.out.println("Left Direction " +rightDirection);
+			
 		}
 		if (attributes.containsKey("screen-width")) { 
-			String screenWidthStr = attributes.get("up-direction");
+			String screenWidthStr = attributes.get("screen-width");
 			Scanner s = new Scanner(screenWidthStr);
 			screenWidth = s.nextDouble();
+			s.close();
 		}
 		
 		if (attributes.containsKey("screen-dist")) { 
 			String screenWidthStr = attributes.get("screen-dist");
 			Scanner s = new Scanner(screenWidthStr);
 			screenDist = s.nextDouble();
+			s.close();
 		}
+		Pc = new Point3D(eye);
+		Pc.addVector(Vec.scale(screenDist, direction));
 	}
 	
 	/**
@@ -57,11 +64,8 @@ public class Camera implements IInitable{
 	 * @return
 	 */
 	
-	public Ray constructRayThroughPixel(double x, double y, double height, double width) {		
-		double screenHeight = screenWidth * (width / height);
-		double pixelSize = width / screenWidth;
-		Point3D Pc = new Point3D(eye);
-		Pc.addVector(Vec.scale(screenDist, direction));
+	public Ray constructRayThroughPixel(double x, double y, double height, double width) {
+		double pixelSize = screenWidth / width;
 		Point3D P = new Point3D(Pc);
 		double rightScalar = (x - Math.floor(width/2))*pixelSize;
 		double upScalar = (y - Math.floor(height/2))*pixelSize;
@@ -70,5 +74,4 @@ public class Camera implements IInitable{
 		Vec vec = new Vec(P, eye);
 		return new Ray(eye, vec);
 	}
-	
 }

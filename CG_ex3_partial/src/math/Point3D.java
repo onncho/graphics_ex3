@@ -38,6 +38,7 @@ public class Point3D{
 		this.y += vec.y;
 		this.z += vec.z;
 	}
+	
 	public void subVector(Vec vec){
 		this.x -= vec.x;
 		this.y -= vec.y;

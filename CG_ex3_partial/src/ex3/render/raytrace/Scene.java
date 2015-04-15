@@ -53,6 +53,9 @@ public class Scene implements IInitable {
 		Intersection minIntersection = null;
 		for(Surface surface: surfaces){
 			Intersection intersection = surface.intersectRay(ray);
+			if(intersection == null){
+				continue;
+			}
 			double currentLength = intersection.getLength();
 			if (currentLength < shortestLength){
 				minIntersection = intersection; 
@@ -64,7 +67,11 @@ public class Scene implements IInitable {
 
 	public Vec calcColor(Ray ray, int level) {
 		//TODO implement ray tracing recursion here, add whatever you need
-		return null;
+		Intersection intersection = findIntersection(ray);
+		if(intersection != null){
+				return new Vec("1 1 1");
+		}
+		return new Vec("0 0 0");
 	}
 
 	/**
@@ -75,39 +82,39 @@ public class Scene implements IInitable {
 	 */
 	public void addObjectByName(String name, Map<String, String> attributes) {
 		//this adds all objects to scene except the camera
-		
+
 		Surface surface = null;
 		Light light = null;
-	
+
 		//Check for surfaces
 		if ("sphere".equals(name))
 			surface = new Sphere();
-		
+
 		if ("triangle".equals(name))
 			surface = new Triangle();
-		
+
 		if ("convexpolygon".equals(name))
 			surface = new ConvexPolygon();
-		
+
 		if ("disc".equals(name))
 			surface = new Disc();
-		
+
 		//Check for lights
 		if ("dir-light".equals(name))
 			light = new DirectionalLight();
-		
+
 		if ("omni-light".equals(name))
 			light = new OmniLight();
-		
+
 		if ("spot-light".equals(name))
 			light = new SpotLight();
 
 		//adds a surface to the list of surfaces
 		if (surface != null) {
-		surface.init(attributes);
+			surface.init(attributes);
 			surfaces.add(surface);
 		}
-		
+
 		//adds a light to the list of lights
 		if (light != null) {
 			light.init(attributes);
@@ -117,5 +124,9 @@ public class Scene implements IInitable {
 
 	public void setCameraAttributes(Map<String, String> attributes) {
 		this.camera.init(attributes);
+	}
+
+	public Camera getCamera() {
+		return camera;
 	}
 }

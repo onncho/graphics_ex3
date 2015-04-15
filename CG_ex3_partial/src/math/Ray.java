@@ -21,6 +21,7 @@ public class Ray {
 	public Ray(Point3D p, Vec v) {
 		this.p = p;
 		this.v = v;
+		v.normalize();
 	}
 	
 }

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import math.Ray;
+import math.Vec;
 import ex3.parser.Element;
 import ex3.parser.SceneDescriptor;
 import ex3.render.IRenderer;
@@ -57,9 +59,16 @@ public class RayTracer implements IRenderer {
 	 */
 	@Override
 	public void renderLine(BufferedImage canvas, int line) {
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
 		for (int i = 0; i < canvas.getWidth(); i++) {
 			canvas.setRGB(i, line, bgColor.getRGB());
+			Ray pixelRay = scene.getCamera().constructRayThroughPixel(i, line, height, width);
+			Vec color = scene.calcColor(pixelRay, 1);
+			int RGB = new Color(255, 255, 255).getRGB();
+			if( (color.x == 1) && (color.y == 1) && (color.z == 1)){
+				canvas.setRGB(i, line, RGB);
+			}
 		}
-		
 	}
 }
