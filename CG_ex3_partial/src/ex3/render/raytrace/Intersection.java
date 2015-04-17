@@ -8,7 +8,7 @@ public class Intersection {
 	private Surface surface;
 	
 	public Intersection(Point3D p, double length, Surface surface){
-		this.p = p;
+		this.p = new Point3D(p);
 		this.length = length;
 		this.surface = surface;
 	}

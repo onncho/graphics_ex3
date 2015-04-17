@@ -30,6 +30,12 @@ public class Disc extends Surface {
 	
 	@Override
 	public Intersection intersectRay(Ray ray){
+		Plane plane = new Plane(normal, center);
+		Intersection planeIntersection = plane.intersectRay(ray);
+		if(planeIntersection == null) return null;
+		if(Point3D.sub(planeIntersection.getP(), center).length() <= radius){
+			return planeIntersection;
+		}
 		return null;
 	}
 

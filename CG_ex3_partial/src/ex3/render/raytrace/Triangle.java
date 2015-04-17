@@ -3,6 +3,7 @@ import java.util.Map;
 
 import math.Point3D;
 import math.Ray;
+import math.Vec;
 
 
 public class Triangle extends Surface {
@@ -30,8 +31,38 @@ public class Triangle extends Surface {
 	}
 	
 	@Override
-	public Intersection intersectRay(Ray ray){
-		return null;
+	public Intersection intersectRay(Ray ray){		
+		//finding all vectors
+		Vec v1 = Point3D.sub(ray.p, p0);
+		Vec v2 = Point3D.sub(ray.p, p1);
+		Vec v3 = Point3D.sub(ray.p, p2);
+		
+		//finding all normals
+		Vec normal1 = Vec.crossProd(v2, v1);
+		normal1.scale(1 / normal1.length());
+		
+		Vec normal2 = Vec.crossProd(v3, v2);
+		normal2.scale(1 / normal2.length());
+		
+		Vec normal3 = Vec.crossProd(v1, v3);
+		normal3.scale(1 / normal3.length());
+		
+		//finding intersection with plane
+		Vec normal = Vec.crossProd(Point3D.sub(p1, p0), Point3D.sub(p2, p1));
+		Intersection intersection = new Plane(normal, p0).intersectRay(ray);
+		if(intersection == null){
+			return null;
+		}
+		Point3D intersectionPoint = intersection.getP();
+		
+		
+		//doing all three tests
+		if((Vec.dotProd(Point3D.sub(ray.p, intersectionPoint), normal1) < 0) ||
+				(Vec.dotProd(Point3D.sub(ray.p, intersectionPoint), normal2) < 0) ||
+				(Vec.dotProd(Point3D.sub(ray.p, intersectionPoint), normal3) < 0)){
+			return null;
+		}
+		return intersection;
 	}
 
 	public Point3D getP0() {
